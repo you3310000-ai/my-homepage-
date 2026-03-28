@@ -1,0 +1,473 @@
+:root {
+    /* Jasmineを参考に、落ち着いた青と緑を基調に、アクセントで暖色系を使用 */
+    --primary-color: #4a90e2; /* 落ち着いた青 */
+    --secondary-color: #50e3c2; /* 明るいミントグリーン */
+    --accent-color: #f5a623; /* 活気のあるオレンジ */
+    --text-color: #333333;
+    --light-text-color: #666666;
+    --bg-light: #f8faff; /* 非常に薄い青の背景 */
+    --bg-white: #ffffff;
+    --border-color: #e0e0e0;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.12);
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+/* --- ナビゲーション --- */
+nav {
+    background-color: var(--bg-white);
+    box-shadow: 0 2px 10px var(--shadow-light);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    font-family: 'M PLUS 1p', sans-serif;
+    font-weight: 800;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 1.6em;
+    display: flex;
+    align-items: center;
+}
+.logo span {
+    font-size: 0.6em;
+    font-weight: normal;
+    margin-left: 10px;
+    color: var(--light-text-color);
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+nav ul li {
+    margin-left: 30px;
+}
+nav ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.05em;
+    position: relative;
+    transition: color 0.3s ease;
+}
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+/* --- ヘッダー (ヒーローセクション) --- */
+header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    padding: 100px 20px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+header::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: rotate(45deg);
+}
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: rotate(-30deg);
+}
+header h1 {
+    font-size: 3.5em;
+    text-shadow: 2px 2px 10px var(--shadow-medium);
+    margin-bottom: 20px;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+header p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 5px var(--shadow-light);
+    position: relative;
+    z-index: 1;
+}
+.btn-primary {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 15px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 5px 15px var(--shadow-medium);
+    position: relative;
+    z-index: 1;
+}
+.btn-primary:hover {
+    background-color: #e0901a;
+    transform: translateY(-3px);
+}
+
+/* --- セクション共通 --- */
+.section {
+    padding: 80px 0;
+    position: relative;
+}
+h2 {
+    text-align: center;
+    font-size: 2.8em;
+    margin-bottom: 60px;
+    color: var(--heading-color);
+    position: relative;
+}
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+h3 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+h4 {
+    font-size: 1.3em;
+    color: var(--heading-color);
+    margin-bottom: 10px;
+}
+
+/* --- カードスタイル --- */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+.card {
+    background: var(--bg-white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px var(--shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px var(--shadow-medium);
+}
+.card .icon-num {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    font-weight: bold;
+    font-size: 1.5em;
+    box-shadow: 0 4px 10px var(--shadow-light);
+}
+.card img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* --- 「ゆう」についてセクション --- */
+.about-section-content {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.about-text {
+    flex: 2;
+    min-width: 300px;
+    text-align: left;
+}
+.about-image-wrapper {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+}
+.about-image-wrapper img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    border: 6px solid var(--secondary-color);
+    box-shadow: 0 10px 25px var(--shadow-medium);
+}
+.manager-info {
+    background: var(--bg-white);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px var(--shadow-light);
+}
+
+/* --- 事業所概要セクション --- */
+.info-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    max-width: 800px;
+    margin: 40px auto 0 auto;
+}
+.info-item {
+    background: var(--bg-white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px var(--shadow-light);
+    flex: 1;
+    min-width: 250px;
+    max-width: 350px;
+    text-align: center;
+}
+.info-item h4 {
+    color: var(--primary-color);
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+/* --- アクセスセクション --- */
+#access {
+    background-color: var(--bg-light);
+}
+#access .access-details {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    text-align: center;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#access .access-item {
+    flex: 1;
+    min-width: 280px;
+    background: var(--bg-white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px var(--shadow-light);
+}
+#access .access-item h3 {
+    color: var(--primary-color);
+    font-size: 1.4em;
+    margin-bottom: 15px;
+}
+.map-container {
+    margin-top: 50px;
+    text-align: center;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px var(--shadow-medium);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.map-container iframe {
+    width: 100%;
+    height: 400px;
+    border: 0;
+}
+.map-note {
+    font-size: 0.9em;
+    margin-top: 15px;
+    color: var(--light-text-color);
+    text-align: center;
+}
+
+/* --- お問い合わせセクション --- */
+.cta-box {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    padding: 60px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px var(--shadow-medium);
+    text-align: center;
+    color: white;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.cta-box h2 {
+    color: white;
+    margin-bottom: 30px;
+}
+.cta-box h2::after {
+    background-color: white;
+}
+.cta-box p {
+    font-size: 1.1em;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+.contact-info {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: white;
+    margin: 30px 0;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+.contact-info span {
+    display: block;
+    font-size: 0.7em;
+    font-weight: normal;
+    margin-top: 5px;
+}
+.btn-contact {
+    display: inline-block;
+    background: white;
+    color: var(--primary-color);
+    padding: 15px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    box-shadow: 0 5px 15px var(--shadow-medium);
+}
+.btn-contact:hover {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* --- フッター --- */
+footer {
+    background: var(--primary-color);
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 80px;
+}
+footer p {
+    margin: 5px 0;
+}
+footer strong {
+    font-size: 1.1em;
+}
+
+/* --- レスポンシブデザイン --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    nav .container {
+        flex-direction: column;
+    }
+    nav ul {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    nav ul li {
+        margin: 0 10px 10px;
+    }
+    header h1 {
+        font-size: 2.5em;
+    }
+    header p {
+        font-size: 1.1em;
+    }
+    .btn-primary {
+        padding: 12px 30px;
+        font-size: 1em;
+    }
+    h2 {
+        font-size: 2.2em;
+        margin-bottom: 40px;
+    }
+    .section {
+        padding: 60px 0;
+    }
+    .about-section-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .about-text, .about-image-wrapper {
+        min-width: unset;
+        width: 100%;
+    }
+    .info-grid, .access-details {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .info-item, .access-item {
+        min-width: unset;
+        width: 100%;
+    }
+    .map-container iframe {
+        height: 300px;
+    }
+    .cta-box {
+        padding: 40px;
+    }
+    .contact-info {
+        font-size: 1.4em;
+    }
+}
