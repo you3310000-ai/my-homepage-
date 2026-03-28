@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【最終デザイン】合同会社こうのとりケア - 介護スタッフ募集</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=M+PLUS+1p:wght@400;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS (Animate On Scroll) Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* --- 基本設定とリセット --- */
+        :root {
+            --primary-color: #87CEEB; /* 水色 (SkyBlue) */
+            --secondary-color: #4682B4; /* スチールブルー (SteelBlue) */
+            --text-color: #5a5a5a;
+            --heading-color: #333;
+            --bg-color: #F0F8FF; /* アリスブルー (AliceBlue) */
+            --white-color: #ffffff;
+            --light-gray-color: #E0FFFF; /* ライトシアン (LightCyan) */
+            --border-color: #B0E0E6; /* パウダーブルー (PowderBlue) */
+        }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            opacity: 0; /* 初期状態は非表示 */
+            transition: opacity 0.5s ease-in-out;
+        }
+        body.loaded {
+            opacity: 1; /* 読み込み完了で表示 */
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 25px;
+        }
+
+        /* --- ローディング画面 --- */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--white-color); display: flex; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #loader.hidden { opacity: 0; visibility: hidden; }
+        .spinner { width: 60px; height: 60px; border: 5px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- タイポグラフィ --- */
+        h1, h2, h3 { font-family: 'M PLUS 1p', sans-serif; font-weight: 800; color: var(--heading-color); letter-spacing: 0.05em; }
+        h2 { font-size: 2.5em; text-align: center; margin-bottom: 60px; position: relative; padding-bottom: 15px; }
+        h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background-color: var(--primary-color); }
+        p { margin-bottom: 1.5em; }
+
+        /* --- ナビゲーション --- */
+        nav { background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 20px 0; position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-family: 'M PLUS 1p', sans-serif; font-size: 1.6em; font-weight: 800; color: var(--primary-color); text-decoration: none; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; }
+        nav ul li a { display: block; padding: 10px 20px; text-decoration: none; color: var(--text-color); font-weight: 700; position: relative; transition: color 0.3s; }
+        nav ul li a::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--primary-color); transition: width 0.3s; }
+        nav ul li a:hover { color: var(--heading-color); }
+        nav ul li a:hover::after { width: 100%; }
+
+        /* --- ヘッダー --- */
+        header { background: url('C:/Users/you33/OneDrive/デスクトップ/HPデスクトップ/バイト募集/介護画像①.jpg') no-repeat center center/cover; color: var(--white-color); text-align: center; padding: 150px 20px; position: relative; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.2); }
+        header .content { position: relative; z-index: 1; }
+        header h1 { font-size: 3.5em; margin: 0 0 20px 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); color: var(--white-color); opacity: 0; transform: translateY(20px); animation: fadeInUp 1s 0.5s forwards; }
+        header p { font-size: 1.5em; margin: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); opacity: 0; transform: translateY(20px); animation: fadeInUp 1s 0.8s forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* --- セクション共通 --- */
+        .section { padding: 100px 0; position: relative; }
+        .section.bg-light { background-color: var(--light-gray-color); }
+
+        /* --- ABOUTセクション背景 --- */
+        #about { z-index: 1; overflow: hidden; }
+        #about::before {
+            content: '';
+            background: url('https://images.unsplash.com/photo-1533228100845-081c8f281439') no-repeat center center/cover;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* --- カード --- */
+        .grid-3, .grid-2 { display: grid; gap: 40px; }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .card, .job-details-card { background-color: var(--white-color); border-radius: 15px; padding: 35px; border: 1px solid var(--border-color); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card:hover, .job-details-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+        .card h3 { font-size: 1.6em; color: var(--primary-color); margin-top: 0; margin-bottom: 15px; }
+
+        /* --- コンテンツブロック --- */
+        .image-content { display: flex; align-items: center; gap: 60px; }
+        .image-content .text { flex: 1; }
+        .image-content .image { flex: 1; }
+        .image-content img { width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+        /* --- 募集要項 --- */
+        .job-details-card { height: 100%; }
+        .job-details-card h3 { font-size: 1.6em; color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 25px; }
+        .wage-table { width: 100%; border-collapse: collapse; flex-grow: 1; }
+        .wage-table th, .wage-table td { padding: 15px 10px; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: top; }
+        .wage-table th { font-weight: 700; width: 30%; }
+        .wage-table ul { list-style: none; padding-left: 0; margin: 0; }
+        .wage-table ul li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+        .wage-table ul li::before { content: '●'; color: var(--primary-color); position: absolute; left: 0; font-size: 0.8em; }
+
+        /* --- 応募セクション (CTA) --- */
+                .cta-section { background: linear-gradient(120deg, #E0F7FA 0%, #81D4FA 50%, #B39DDB 100%); /* Light Cyan to Light Blue to Light Purple */ color: var(--white-color); text-align: center; padding: 80px 20px; border-radius: 20px; }
+        .cta-section h2 { color: var(--white-color); margin-bottom: 20px; }
+        .cta-section h2::after { background-color: var(--white-color); }
+        .cta-section p { max-width: 600px; margin: 0 auto 40px auto; opacity: 0.9; }
+        .apply-button { display: inline-block; background-color: var(--white-color); color: var(--primary-color); padding: 18px 45px; border-radius: 50px; text-decoration: none; font-family: 'M PLUS 1p', sans-serif; font-weight: 800; font-size: 1.2em; transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s; box-shadow: 0 5px 15px rgba(0,0,0, 0.1); border: 2px solid transparent; }
+        .apply-button:hover { background-color: transparent; color: var(--white-color); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0, 0.2); border-color: var(--white-color); }
+
+        /* --- フッター --- */
+        footer { background-color: #333; color: #ccc; text-align: center; padding: 50px 20px; margin-top: 100px; }
+        footer p { margin: 5px 0; }
+        footer .logo-footer { color: var(--white-color); font-size: 1.5em; margin-bottom: 15px; font-family: 'M PLUS 1p', sans-serif; font-weight: 800; text-decoration: none; }
+
+        /* --- レスポンシブ対応 --- */
+        @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .image-content { flex-direction: column; } header h1 { font-size: 2.5em; } header p { font-size: 1.2em; } h2 { font-size: 2em; } }
+    </style>
+</head>
+<body>
+
+    <div id="loader"><div class="spinner"></div></div>
+
+    <nav data-aos="fade-down">
+        <div class="container">
+            <a href="#" class="logo">こうのとりケア</a>
+            <ul>
+                <li><a href="#about">私たちの想い</a></li>
+                <li><a href="#details">募集要項</a></li>
+                <li><a href="#apply">応募する</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="content">
+            <h1>高槻市で広がる絆、<br>未経験でも安心の職場です</h1>
+            <p>心に寄り添うケアで、あなたも誰かの支えになりませんか？</p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <section id="about" class="section">
+            <div data-aos="fade-up" style="display: flex; align-items: center; gap: 30px; flex-wrap: wrap; justify-content: center;">
+                <div style="flex: 1; min-width: 300px;">
+                    <h2>私たちの想い</h2>
+                    <p style="text-align: left; max-width: 750px; margin: 0 auto 1.5em auto; font-size: 1.1em;">
+                        私たちは、利用者様一人ひとりの心に寄り添い、温かいケアを提供することを何よりも大切にしています。<br>
+                        「誰かの役に立ちたい」その純粋な気持ちがあれば、経験は問いません。充実した研修と、仲間からの手厚いサポートで、あなたの成長を全力で応援します。
+                    </p>
+                </div>
+                <div style="flex: 1; min-width: 300px; text-align: center;">
+                    <img src="C:/Users/you33/OneDrive/デスクトップ/HPデスクトップ/バイト募集/車椅子画像.png" alt="ガイドイラスト" style="border-radius: 15px; max-width: 100%; height: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section bg-light">
+            <h2 data-aos="fade-up">こうのとりケアの3つの特徴</h2>
+            <div class="grid-3">
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <h3>未経験からプロへ</h3>
+                    <p>在籍スタッフの多くが未経験からスタート。「初任者研修」や「行動援護」など、資格取得に必要な費用は会社がサポートします。働きながら、専門的なスキルと資格を手に入れることができます。</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <h3>柔軟なシフト体制</h3>
+                    <p>あなたのライフスタイルに合わせた働き方が可能です。ご家庭やプライベートとの両立をしっかりサポートします。</p>
+                </div>
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <h3>温かい仲間と職場</h3>
+                    <p>20代から60代までの、幅広い年代のスタッフが活躍しています。困ったことがあればすぐに相談できる、風通しの良いアットホームな環境が自慢です。新人さんもすぐに馴染めますよ。</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <div class="image-content">
+                <div class="text" data-aos="fade-left" style="flex: 1 1 100%;">
+                    <h2>安心して成長できる環境</h2>
+                    <p>私たちは、スタッフ一人ひとりが安心して長く働ける環境づくりに力を入れています。豊かな自然に囲まれた高槻市で、利用者様の笑顔と共に、あなた自身も成長していくことができます。私たちと一緒に、地域に貢献するやりがいのある仕事を始めませんか？</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="details" class="section bg-light">
+            <h2 data-aos="fade-up">募集要項</h2>
+            <div class="grid-2">
+                <div class="job-details-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3>正社員<br><small style="font-size: 0.6em; color: var(--text-color);">（サービス提供責任者候補）</small></h3>
+                    <table class="wage-table">
+                        <tbody>
+                            <tr><th>募集職種</th><td>訪問介護職員（正社員/サービス提供責任者候補）</td></tr>
+                            <tr><th>給与</th><td style="font-size: 1.2em; color: var(--primary-color); font-weight: bold;">月給 245,000円 ～ 320,000円</td></tr>
+                            <tr><th>給与内訳</th><td><ul><li>基本給：180,000円～</li><li>資格手当：5,000円～15,000円</li><li>処遇改善手当：30,000円～</li><li>固定残業代：30,000円（20時間分）</li><li>賞与：年2回（計2.0～3.0ヶ月分）</li><li>昇給：年1回</li></ul></td></tr>
+                            <tr><th>勤務時間</th><td>9:00～18:00（休憩60分）<br><strong>週40時間（フレックスタイム制）</strong></td></tr>
+                            <tr><th>休日・休暇</th><td><ul><li>完全週休2日制（シフト制）</li><li>年間休日115日</li><li>夏季休暇（3日）、年末年始休暇（5日）</li><li>産前産後・育児休業（取得実績あり）</li></ul></td></tr>
+                            <tr><th>応募資格</th><td><ul><li>初任者研修修了者以上</li><li>介護福祉士・サ責経験者 優遇</li><li>事業所の中心として活躍したい方</li></ul></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="job-details-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3>パート・アルバイト<br><small style="font-size: 0.6em; color: var(--text-color);">（居宅介護・移動支援・行動援護）</small></h3>
+                    <table class="wage-table">
+                        <tbody>
+                            <tr><th>職種</th><td><ul><li>移動支援（ガイドヘルパー）</li><li>行動援護</li><li>身体介護</li><li>家事援助</li></ul></td></tr>
+                            <tr><th>給与</th><td><ul><li>土日（1回5時間程度）<br>時給1,200円～2,000円</li></ul></td></tr>
+                            <tr><th>勤務条件</th><td><ul><li>週1日、1日3時間から勤務可能</li><li>平日のみ / 土日のみOK (土日大歓迎!)</li><li>勤務地: 高槻市全域</li></ul></td></tr>
+                            <tr><th>応募資格</th><td>初任者研修、行動援護 等<br><small>※資格をお持ちの方歓迎</small></td></tr>
+                            <tr><th>事業所</th><td>こうのとりケア<br>高槻市深沢本町26-11</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="access" class="section bg-light">
+            <div class="container">
+                <h2 data-aos="fade-up">アクセス</h2>
+                <p style="text-align: center; margin-bottom: 30px;">〒569-0033 大阪府高槻市深沢本町26-11</p>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <p>深沢住宅南口バス停より徒歩3分</p>
+                    <p>高槻駅南口４番線より北大塚行バス</p>
+                </div>
+                <div style="text-align: center; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <iframe
+                        src="https://maps.google.com/maps?q=高槻市深沢本町26-11&output=embed"
+                        width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <p style="font-size: 0.9em; margin-top: 10px; color: #666;">※上記地図はプレースホルダーです。正確な位置情報はGoogleマップでご確認ください。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="apply" class="section">
+            <div class="cta-section" data-aos="zoom-in">
+                <h2>さあ、私たちと一緒に始めましょう</h2>
+                <p>ご興味を持っていただけましたら、まずはお気軽にご応募ください。「話だけでも聞いてみたい」という方も心から歓迎します！</p>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 50px; flex-wrap: wrap; margin-bottom: 40px;">
+                    <div style="text-align: center;">
+                        <p style="margin-bottom: 15px; font-weight: 700;">Webフォームからのご応募はこちら</p>
+                        <a href="https://ws.formzu.net/fgen/S248164799/" class="apply-button" target="_blank">Webフォームへ</a>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="margin-bottom: 15px; font-weight: 700;">LINEでのお問い合わせも可能です</p>
+                        <img src="https://qr-official.line.me/gs/M_116qqmow_BW.png?oat_content=qr" alt="LINE QRコード" style="width: 150px; height: 150px; border: 1px solid var(--border-color); padding: 5px; background: white; border-radius: 5px;">
+                    </div>
+                </div>
+                <div>
+                    <p>お電話でのお問い合わせも受け付けております。<br><strong style="font-size: 1.5em;" class="tel-number">TEL: 072-658-8481</strong> (担当: 鳥山)</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <a href="#" class="logo-footer">合同会社こうのとりケア</a>
+            <p>深沢事業所：〒569-0033　大阪府高槻市深沢本町26-11</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">&copy; 2026 Kounotori Care LLC. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- AOS (Animate On Scroll) Library JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // ローディング処理
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader');
+            loader.classList.add('hidden');
+            document.body.classList.add('loaded');
+        });
+        // AOSの初期化
+        AOS.init({
+            duration: 800, // アニメーションの継続時間
+            once: true, // アニメーションを1回だけ実行
+            offset: 100, // トリガーとなるオフセット
+        });
+    </script>
+
+</body>
+</html>
